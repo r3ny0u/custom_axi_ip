@@ -74,7 +74,6 @@ module custom_axi_ip_top
     logic enable;
     logic [1:0] status;
 
-    $display("data: %d, enable: %d", reg_file_to_ip.data.q, reg_file_to_ip.enable.q);
     custom_axi_ip i_custom_axi_ip (
         .clk_i(clk_i),
         .rst_ni(rst_ni),
