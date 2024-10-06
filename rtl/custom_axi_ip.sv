@@ -23,14 +23,12 @@ module custom_axi_ip
       current_state <= custom_axi_ip_pkg::IDLE;
     end else begin
       current_state <= next_state;
-      $display("enable_in: %d", enable_in);
     end
   end
 
   always_ff @(posedge clk_i) begin
     case (current_state)
       custom_axi_ip_pkg::IDLE: begin
-        $display("Idle state but not enabled");
         if (enable_in) begin
           $display("Idle state");
           internal_data <= ipreg_data;
