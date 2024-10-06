@@ -1,0 +1,50 @@
+{ 
+    name: "custom_axi_ip",
+    clock_primary: "clk_i",
+    reset_primary: "rst_ni",
+    bus_interfaces: [
+        {
+            protocol: "reg_iface", 
+            direction: "device"
+        }
+    ],
+
+    regwidth: "32",
+    registers: [
+        {
+            name: "DATA",
+            desc: "Data register",
+            swaccess: "rw",
+            hwaccess: "hrw",
+            fields: [
+                { bits: "31:0" }
+            ]
+        },
+        {
+            name: "ENABLE",
+            desc: "Enable register",
+            swaccess: "rw",
+            hwaccess: "hrw",
+            fields: [
+                { bits: "1" }
+            ]
+        },
+        {
+            name: "STATUS",
+            desc: "Status register",
+            swaccess: "rw",
+            hwaccess: "hrw",
+            fields: [
+                { bits: "1:0",
+                  desc: "Current status",
+                  enum:[
+                    { value: "0", name: "IDLE", desc: "Idle state" },
+                    { value: "1", name: "BUSY", desc: "Busy state" },
+                    { value: "2", name: "DONE", desc: "Done state" },
+                    { value: "3", name: "ERROR", desc: "Error state" }
+                  ]
+                }
+            ]
+        }
+    ]
+}

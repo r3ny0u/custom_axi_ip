@@ -1,0 +1,17 @@
+package:
+  name: custom_axi_ip
+  authors:
+    - "Ren You <rchang003@e.ntu.edu.sg>"
+  dependencies:
+    axi:                   { git: "https://github.com/pulp-platform/axi.git", version: 0.39.2 }
+    register_interface:    { git: "https://github.com/pulp-platform/register_interface.git", version: 0.4.1 }
+  sources:
+    defines:
+    files:
+      - gen_sv/custom_axi_ip_reg_pkg.sv
+      - gen_sv/custom_axi_ip_reg_top.sv
+      - rtl/custom_axi_ip.sv
+      - rtl/custom_axi_ip_top.sv
+    include_dirs:
+    vlog_opts:
+      - -L register_interface_lib
