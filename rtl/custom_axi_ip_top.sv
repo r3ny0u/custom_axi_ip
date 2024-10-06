@@ -74,12 +74,12 @@ module custom_axi_ip_top
     logic enable;
     logic [1:0] status;
 
+    $display("data: %d, enable: %d", reg_file_to_ip.data.q, reg_file_to_ip.enable.q);
     custom_axi_ip i_custom_axi_ip (
         .clk_i(clk_i),
         .rst_ni(rst_ni),
         .ipreg_data(reg_file_to_ip.data.q),
         .enable_in(reg_file_to_ip.enable.q),
-        .status_in(reg_file_to_ip.status.q),
         .ipreg_data_out(result),
         .enable_out(enable),
         .status_out(status)

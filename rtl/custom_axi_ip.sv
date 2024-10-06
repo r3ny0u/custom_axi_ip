@@ -9,7 +9,6 @@ module custom_axi_ip
     // Register to Hardware interface
     input logic [31:0] ipreg_data,
     input logic enable_in,
-    input status_e status_in,
     ouput logic [31:0] ipreg_data_out,
     ouput logic enable_out,
     output status_e status_out
@@ -21,7 +20,7 @@ module custom_axi_ip
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
       internal_data <= 32'b0;
-      current_state <= status_e::IDLE;
+      current_state <= custom_axi_ip_pkg::IDLE;
     end else begin
       current_state <= next_state;
     end
@@ -29,29 +28,30 @@ module custom_axi_ip
 
   always_comb begin
     case (current_state)
-      status_e::IDLE: begin
+      custom_axi_ip_pkg::IDLE: begin
+        $display("Idle state but not enabled");
         if (enable_in) begin
           $display("Idle state");
           internal_data <= ipreg_data;
-          next_state <= status_e::BUSY;
+          next_state <= custom_axi_ip_pkg::BUSY;
         end
       end
-      status_e::BUSY: begin
+      custom_axi_ip_pkg::BUSY: begin
         $display("Busy state");
         internal_data <= internal_data + 1;
-        next_state <= status_e::DONE;
+        next_state <= custom_axi_ip_pkg::DONE;
       end
-      status_e::DONE: begin
+      custom_axi_ip_pkg::DONE: begin
         $display("Done state");
         ipreg_data_out <= internal_data;
         enable_out <= 1'b0;
-        next_state <= status_e::IDLE;
+        next_state <= custom_axi_ip_pkg::IDLE;
       end
-      status_e::ERROR: begin
+      custom_axi_ip_pkg::ERROR: begin
         $display("Error state");
         ipreg_data_out <= 32'b0;
         enable_out <= 1'b0;
-        next_state <= status_e::IDLE;
+        next_state <= custom_axi_ip_pkg::IDLE;
       end
       default: begin
         next_state <= current_state;
