@@ -27,7 +27,7 @@ module custom_axi_ip
     end
   end
 
-  always_comb begin
+  always_ff @(posedge clk_i) begin
     case (current_state)
       custom_axi_ip_pkg::IDLE: begin
         $display("Idle state but not enabled");
