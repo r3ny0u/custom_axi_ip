@@ -34,6 +34,7 @@ module custom_axi_ip
           internal_data <= ipreg_data;
           next_state <= status_e::BUSY;
         end
+      end
       status_e::BUSY: begin
         internal_data <= internal_data + 1;
         next_state <= status_e::DONE;
