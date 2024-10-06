@@ -4,7 +4,7 @@ package:
     - "Ren You <rchang003@e.ntu.edu.sg>"
 
 dependencies:
-  # common_cells:          { git: "https://github.com/pulp-platform/common_cells.git", version: 1.21.0 }
+  common_cells:          { git: "https://github.com/pulp-platform/common_cells.git", version: 1.21.0 }
   axi:                   { git: "https://github.com/pulp-platform/axi.git", version: 0.39.2 }
   register_interface:    { git: "https://github.com/pulp-platform/register_interface.git", version: 0.4.1 }
 
@@ -12,6 +12,6 @@ sources:
   files:
     - gen_sv/custom_axi_ip_reg_pkg.sv
     - gen_sv/custom_axi_ip_reg_top.sv
+    - rtl/custom_axi_ip_pkg.sv
     - rtl/custom_axi_ip.sv
     - rtl/custom_axi_ip_top.sv
-    - rtl/custom_axi_ip_pkg.sv

@@ -9,8 +9,8 @@ module custom_axi_ip
     // Register to Hardware interface
     input logic [31:0] ipreg_data,
     input logic enable_in,
-    ouput logic [31:0] ipreg_data_out,
-    ouput logic enable_out,
+    output logic [31:0] ipreg_data_out,
+    output logic enable_out,
     output status_e status_out
 );
   // Register to hold input data
