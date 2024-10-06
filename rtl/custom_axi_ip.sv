@@ -23,6 +23,7 @@ module custom_axi_ip
       current_state <= custom_axi_ip_pkg::IDLE;
     end else begin
       current_state <= next_state;
+      $display("enable_in: %d", enable_in);
     end
   end
 
@@ -35,11 +36,13 @@ module custom_axi_ip
           internal_data <= ipreg_data;
           next_state <= custom_axi_ip_pkg::BUSY;
         end
+        enable_out <= 1'b0;
       end
       custom_axi_ip_pkg::BUSY: begin
         $display("Busy state");
         internal_data <= internal_data + 1;
         next_state <= custom_axi_ip_pkg::DONE;
+        enable_out <= 1'b0;
       end
       custom_axi_ip_pkg::DONE: begin
         $display("Done state");

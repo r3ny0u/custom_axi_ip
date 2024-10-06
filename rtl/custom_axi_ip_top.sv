@@ -85,11 +85,14 @@ module custom_axi_ip_top
         .status_out(status)
     );
 
-    assign ip_to_reg_file.data.d = result;
-    assign ip_to_reg_file.data.de = 1'b1;
-    assign ip_to_reg_file.enable.d = enable;
-    assign ip_to_reg_file.enable.de = 1'b1;
-    assign ip_to_reg_file.status.d = status;
-    assign ip_to_reg_file.status.de = 1'b1;
+    // assign ip_to_reg_file.data.d = result;
+    // assign ip_to_reg_file.data.de = 1'b1;
+    // assign ip_to_reg_file.enable.d = enable;
+    // assign ip_to_reg_file.enable.de = 1'b1;
+    // assign ip_to_reg_file.status.d = status;
+    // assign ip_to_reg_file.status.de = 1'b1;
+    assign ip_to_reg_file.data = {result, 1'b1};
+    assign ip_to_reg_file.enable = {enable, 1'b1};
+    assign ip_to_reg_file.status = {status, 1'b1};
 
 endmodule
