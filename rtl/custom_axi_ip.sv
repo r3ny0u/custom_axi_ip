@@ -31,20 +31,24 @@ module custom_axi_ip
     case (current_state)
       status_e::IDLE: begin
         if (enable_in) begin
+          $display("Idle state");
           internal_data <= ipreg_data;
           next_state <= status_e::BUSY;
         end
       end
       status_e::BUSY: begin
+        $display("Busy state");
         internal_data <= internal_data + 1;
         next_state <= status_e::DONE;
       end
       status_e::DONE: begin
+        $display("Done state");
         ipreg_data_out <= internal_data;
         enable_out <= 1'b0;
         next_state <= status_e::IDLE;
       end
       status_e::ERROR: begin
+        $display("Error state");
         ipreg_data_out <= 32'b0;
         enable_out <= 1'b0;
         next_state <= status_e::IDLE;
