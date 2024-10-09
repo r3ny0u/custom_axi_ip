@@ -63,7 +63,7 @@ module custom_axi_ip
         next_state <= custom_axi_ip_pkg::IDLE;
       end
       default: begin
-        next_state <= current_state;
+        next_state <= custom_axi_ip_pkg::ERROR;
       end
     endcase
   end
