@@ -33,8 +33,8 @@ module custom_axi_ip
           $display("Idle state");
           internal_data <= ipreg_data;
           next_state <= custom_axi_ip_pkg::BUSY;
+          enable_out <= 1'b0;
         end
-        enable_out <= 1'b0;
       end
       custom_axi_ip_pkg::BUSY: begin
         $display("Busy state");
