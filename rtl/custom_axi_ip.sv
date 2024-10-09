@@ -11,7 +11,8 @@ module custom_axi_ip
     input logic enable_in,
     output logic [31:0] ipreg_data_out,
     output logic enable_out,
-    output status_e [1:0] status_out
+    output status_e status_out,
+    output logic wen_out
 );
   // Register to hold input data
   logic [31:0] internal_data;
@@ -29,10 +30,8 @@ module custom_axi_ip
   end
 
   always_ff @(posedge clk_i) begin
-    if (check < 3'b111) begin
-      check <= check + 1;
-      $display("Check: %0d", check);
-      $display("State: %0d, Enable: %h, Input data: %h", current_state, enable_in, ipreg_data);
+    if (enable_in) begin
+      $display("Enable in");
     end
     case (current_state)
       custom_axi_ip_pkg::IDLE: begin
@@ -45,6 +44,7 @@ module custom_axi_ip
           next_state <= custom_axi_ip_pkg::IDLE;
           ipreg_data_out <= ipreg_data;
           enable_out <= enable_in;
+          wen_out <= 1'b0;
         end
       end
       custom_axi_ip_pkg::BUSY: begin
@@ -52,18 +52,20 @@ module custom_axi_ip
         internal_data <= internal_data + 1;
         next_state <= custom_axi_ip_pkg::DONE;
         enable_out <= 1'b0;
+        wen_out <= 1'b0;
       end
       custom_axi_ip_pkg::DONE: begin
         $display("Done state");
         ipreg_data_out <= internal_data;
         enable_out <= 1'b0;
         next_state <= custom_axi_ip_pkg::IDLE;
+        wen_out <= 1'b1;
       end
       custom_axi_ip_pkg::ERROR: begin
         $display("Error state");
         ipreg_data_out <= ipreg_data;
         enable_out <= enable_in;
-        next_state <= custom_axi_ip_pkg::IDLE;
+        wen_out <= 1'b0;
       end
       default: begin
         next_state <= custom_axi_ip_pkg::ERROR;

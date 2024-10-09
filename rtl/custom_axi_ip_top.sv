@@ -73,6 +73,7 @@ module custom_axi_ip_top
     logic [31:0] result;
     logic enable;
     logic [1:0] status;
+    logic wen;
 
     custom_axi_ip i_custom_axi_ip (
         .clk_i(clk_i),
@@ -81,11 +82,12 @@ module custom_axi_ip_top
         .enable_in(reg_file_to_ip.enable),
         .ipreg_data_out(result),
         .enable_out(enable),
-        .status_out(status)
+        .status_out(status),
+        .wen_out(wen)
     );
 
-    assign ip_to_reg_file.data = {result, 1'b0};
-    assign ip_to_reg_file.enable = {enable, 1'b0};
+    assign ip_to_reg_file.data = {result, wen};
+    assign ip_to_reg_file.enable = {enable, wen};
     assign ip_to_reg_file.status = {status, 1'b1};
 
 endmodule
