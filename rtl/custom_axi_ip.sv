@@ -16,17 +16,24 @@ module custom_axi_ip
   // Register to hold input data
   logic [31:0] internal_data;
   status_e current_state, next_state;
+  logic check;
 
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
       internal_data <= 32'b0;
       current_state <= custom_axi_ip_pkg::IDLE;
+      next_state <= custom_axi_ip_pkg::IDLE;
+      check <= 1'b0;
     end else begin
       current_state <= next_state;
     end
   end
 
   always_ff @(posedge clk_i) begin
+    if (!check) begin
+      check <= 1'b1;
+      $display("Current state: %0d", current_state);
+    end
     case (current_state)
       custom_axi_ip_pkg::IDLE: begin
         if (enable_in) begin
