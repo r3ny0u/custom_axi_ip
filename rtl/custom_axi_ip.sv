@@ -30,10 +30,10 @@ module custom_axi_ip
   end
 
   always_ff @(posedge clk_i) begin
-    if (check <= 3'b111) begin
+    if (check < 3'b111) begin
       check <= check + 1;
       $display("Check: %0d", check);
-      $display("State: %0d, Input data: %h", current_state, ipreg_data);
+      $display("State: %0d, Enable: %h, Input data: %h", current_state, enable_in, ipreg_data);
     end
     case (current_state)
       custom_axi_ip_pkg::IDLE: begin
