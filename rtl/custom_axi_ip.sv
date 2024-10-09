@@ -22,7 +22,6 @@ module custom_axi_ip
     if (!rst_ni) begin
       internal_data <= 32'b0;
       current_state <= custom_axi_ip_pkg::IDLE;
-      // next_state <= custom_axi_ip_pkg::IDLE;
       check <= 3'b000;
     end else begin
       current_state <= next_state;
@@ -44,6 +43,8 @@ module custom_axi_ip
           enable_out <= 1'b0;
         end else begin
           next_state <= custom_axi_ip_pkg::IDLE;
+          ipreg_data_out <= ipreg_data;
+          enable_out <= enable_in;
         end
       end
       custom_axi_ip_pkg::BUSY: begin
@@ -60,7 +61,7 @@ module custom_axi_ip
       end
       custom_axi_ip_pkg::ERROR: begin
         $display("Error state");
-        ipreg_data_out <= 32'b0;
+        ipreg_data_out <= ipreg_data;
         enable_out <= enable_in;
         next_state <= custom_axi_ip_pkg::IDLE;
       end

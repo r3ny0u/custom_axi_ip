@@ -84,8 +84,8 @@ module custom_axi_ip_top
         .status_out(status)
     );
 
-    assign ip_to_reg_file.data = {result, 1'b1};
-    assign ip_to_reg_file.enable = {enable, 1'b1};
+    assign ip_to_reg_file.data = {result, 1'b0};
+    assign ip_to_reg_file.enable = {enable, 1'b0};
     assign ip_to_reg_file.status = {status, 1'b1};
 
 endmodule
