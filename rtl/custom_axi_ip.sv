@@ -23,7 +23,7 @@ module custom_axi_ip
       internal_data <= 32'b0;
       current_state <= custom_axi_ip_pkg::IDLE;
       // next_state <= custom_axi_ip_pkg::IDLE;
-      check <= 1'b0;
+      check <= 3'b000;
     end else begin
       current_state <= next_state;
     end
@@ -32,9 +32,8 @@ module custom_axi_ip
   always_ff @(posedge clk_i) begin
     if (check <= 3'b111) begin
       check <= check + 1;
-      $display("Current state: %0d", current_state);
-      $display("ipreg_data: %0d", ipreg_data);
-      $display("enable_in: %0d", enable_in);
+      $display("Check: %0d", check);
+      $display("State: %0d, Input data: %h", current_state, ipreg_data);
     end
     case (current_state)
       custom_axi_ip_pkg::IDLE: begin
