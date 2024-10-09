@@ -11,7 +11,7 @@ module custom_axi_ip
     input logic enable_in,
     output logic [31:0] ipreg_data_out,
     output logic enable_out,
-    output status_e status_out
+    output status_e [1:0] status_out
 );
   // Register to hold input data
   logic [31:0] internal_data;
@@ -27,10 +27,8 @@ module custom_axi_ip
   end
 
   always_ff @(posedge clk_i) begin
-    $display("Current state: %0d", current_state);
     case (current_state)
       custom_axi_ip_pkg::IDLE: begin
-        $display("Enable in: %0d", enable_in);
         if (enable_in) begin
           $display("Idle state");
           internal_data <= ipreg_data;
