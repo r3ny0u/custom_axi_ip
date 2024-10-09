@@ -46,6 +46,7 @@ module custom_axi_ip
           enable_out <= enable_in;
           wen_out <= 1'b0;
         end
+        status_out <= custom_axi_ip_pkg::IDLE;
       end
       custom_axi_ip_pkg::BUSY: begin
         $display("Busy state");
@@ -53,6 +54,7 @@ module custom_axi_ip
         next_state <= custom_axi_ip_pkg::DONE;
         enable_out <= 1'b0;
         wen_out <= 1'b0;
+        status_out <= custom_axi_ip_pkg::BUSY;
       end
       custom_axi_ip_pkg::DONE: begin
         $display("Done state");
@@ -60,19 +62,19 @@ module custom_axi_ip
         enable_out <= 1'b0;
         next_state <= custom_axi_ip_pkg::IDLE;
         wen_out <= 1'b1;
+        status_out <= custom_axi_ip_pkg::DONE;
       end
       custom_axi_ip_pkg::ERROR: begin
         $display("Error state");
         ipreg_data_out <= ipreg_data;
         enable_out <= enable_in;
         wen_out <= 1'b0;
+        status_out <= custom_axi_ip_pkg::ERROR;
       end
       default: begin
         next_state <= custom_axi_ip_pkg::ERROR;
       end
     endcase
   end
-
-  assign status_out = current_state;
 
 endmodule
