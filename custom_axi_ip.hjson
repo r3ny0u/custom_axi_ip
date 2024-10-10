@@ -16,9 +16,7 @@
             desc: "Data register",
             swaccess: "rw",
             hwaccess: "hrw",
-            fields: [
-                { bits: "31:0" }
-            ]
+            bits: "31:0"
         },
         {
             name: "ENABLE",
