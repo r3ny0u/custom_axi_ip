@@ -70,14 +70,14 @@ module custom_axi_ip_top
     );
 
     // wiring signals between control unit and custom axi ip
-    logic [31:0] result;
+    logic [63:0] result;
     logic enable;
     logic wen;
 
     custom_axi_ip i_custom_axi_ip (
         .clk_i(clk_i),
         .rst_ni(rst_ni),
-        .ipreg_data(reg_file_to_ip.data.q),
+        .ipreg_data(reg_file_to_ip.data),
         .enable_in(reg_file_to_ip.enable.q),
         .ipreg_data_out(result),
         .enable_out(enable),

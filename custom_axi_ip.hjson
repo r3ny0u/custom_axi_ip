@@ -12,11 +12,18 @@
     regwidth: "32",
     registers: [
         {
-            name: "DATA",
-            desc: "Data register",
-            swaccess: "rw",
-            hwaccess: "hrw",
-            bits: "31:0"
+            multireg:
+                {
+                    name: "DATA",
+                    desc: "Data register",
+                    count: "2",
+                    cname: "DATA",
+                    swaccess: "rw",
+                    hwaccess: "hrw",
+                    fields: [
+                        { bits: "31:0" }
+                    ]
+                }
         },
         {
             name: "ENABLE",
