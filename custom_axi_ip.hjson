@@ -26,14 +26,14 @@
             swaccess: "rw",
             hwaccess: "hrw",
             fields: [
-                { bits: "1" }
+                { bits: "0" }
             ]
         },
         {
             name: "STATUS",
             desc: "Status register",
-            swaccess: "rw",
-            hwaccess: "hrw",
+            swaccess: "ro",
+            hwaccess: "hwo",
             fields: [
                 { bits: "1:0",
                   desc: "Current status",

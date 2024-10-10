@@ -22,10 +22,6 @@ package custom_axi_ip_reg_pkg;
   } custom_axi_ip_reg2hw_enable_reg_t;
 
   typedef struct packed {
-    logic [1:0]  q;
-  } custom_axi_ip_reg2hw_status_reg_t;
-
-  typedef struct packed {
     logic [31:0] d;
     logic        de;
   } custom_axi_ip_hw2reg_data_reg_t;
@@ -42,9 +38,8 @@ package custom_axi_ip_reg_pkg;
 
   // Register -> HW type
   typedef struct packed {
-    custom_axi_ip_reg2hw_data_reg_t data; // [34:3]
-    custom_axi_ip_reg2hw_enable_reg_t enable; // [2:2]
-    custom_axi_ip_reg2hw_status_reg_t status; // [1:0]
+    custom_axi_ip_reg2hw_data_reg_t data; // [32:1]
+    custom_axi_ip_reg2hw_enable_reg_t enable; // [0:0]
   } custom_axi_ip_reg2hw_t;
 
   // HW -> register type

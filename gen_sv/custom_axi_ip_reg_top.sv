@@ -75,8 +75,6 @@ module custom_axi_ip_reg_top #(
   logic enable_wd;
   logic enable_we;
   logic [1:0] status_qs;
-  logic [1:0] status_wd;
-  logic status_we;
 
   // Register instances
   // R[data]: V(False)
@@ -137,15 +135,14 @@ module custom_axi_ip_reg_top #(
 
   prim_subreg #(
     .DW      (2),
-    .SWACCESS("RW"),
+    .SWACCESS("RO"),
     .RESVAL  (2'h0)
   ) u_status (
     .clk_i   (clk_i    ),
     .rst_ni  (rst_ni  ),
 
-    // from register interface
-    .we     (status_we),
-    .wd     (status_wd),
+    .we     (1'b0),
+    .wd     ('0  ),
 
     // from internal hardware
     .de     (hw2reg.status.de),
@@ -153,7 +150,7 @@ module custom_axi_ip_reg_top #(
 
     // to internal hardware
     .qe     (),
-    .q      (reg2hw.status.q ),
+    .q      (),
 
     // to register interface (read)
     .qs     (status_qs)
@@ -184,10 +181,7 @@ module custom_axi_ip_reg_top #(
   assign data_wd = reg_wdata[31:0];
 
   assign enable_we = addr_hit[1] & reg_we & !reg_error;
-  assign enable_wd = reg_wdata[1];
-
-  assign status_we = addr_hit[2] & reg_we & !reg_error;
-  assign status_wd = reg_wdata[1:0];
+  assign enable_wd = reg_wdata[0];
 
   // Read data return
   always_comb begin
@@ -198,7 +192,7 @@ module custom_axi_ip_reg_top #(
       end
 
       addr_hit[1]: begin
-        reg_rdata_next[1] = enable_qs;
+        reg_rdata_next[0] = enable_qs;
       end
 
       addr_hit[2]: begin
