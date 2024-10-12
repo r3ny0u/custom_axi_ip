@@ -41,8 +41,8 @@ module custom_axi_ip
           $display("Busy state");
           internal_data[63:32] <= internal_data + 1;
           internal_data[31:0] <= internal_data + 1;
-          $display("Internal data 1: %d", internal_datap[63:32]);
-          $display("Internal data 2: %d", internal_datap[31:0]);
+          $display("Internal data 1: %d", internal_data[63:32]);
+          $display("Internal data 2: %d", internal_data[31:0]);
           state <= custom_axi_ip_pkg::DONE;
         end
         custom_axi_ip_pkg::DONE: begin
