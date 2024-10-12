@@ -26,7 +26,7 @@ module custom_axi_ip
       case (state)
         custom_axi_ip_pkg::IDLE: begin
           wen_out <= 1'b0;
-          status_out <= custom_axi_ip_pkg::IDLE;
+          // status_out <= custom_axi_ip_pkg::IDLE;
           if (enable_in) begin
             $display("Idle state");
             internal_data <= ipreg_data;
@@ -37,7 +37,7 @@ module custom_axi_ip
         end
         custom_axi_ip_pkg::BUSY: begin
           wen_out <= 1'b0;
-          status_out <= custom_axi_ip_pkg::BUSY;
+          // status_out <= custom_axi_ip_pkg::BUSY;
           $display("Busy state");
           internal_data[63:32] <= internal_data + 1;
           internal_data[31:0] <= internal_data + 1;
@@ -47,7 +47,7 @@ module custom_axi_ip
         end
         custom_axi_ip_pkg::DONE: begin
           wen_out <= 1'b1;
-          status_out <= custom_axi_ip_pkg::DONE;
+          // status_out <= custom_axi_ip_pkg::DONE;
           $display("Done state");
           ipreg_data_out <= internal_data;
           enable_out <= 1'b0;
@@ -55,7 +55,7 @@ module custom_axi_ip
         end
         custom_axi_ip_pkg::ERROR: begin
           wen_out <= 1'b0;
-          status_out <= custom_axi_ip_pkg::ERROR;
+          // status_out <= custom_axi_ip_pkg::ERROR;
           $display("Error state");
           state <= custom_axi_ip_pkg::IDLE;
         end
@@ -63,6 +63,7 @@ module custom_axi_ip
           state <= custom_axi_ip_pkg::ERROR;
         end
       endcase
+      status_out <= state;
     end
   end
 
