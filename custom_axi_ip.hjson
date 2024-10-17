@@ -12,23 +12,27 @@
     regwidth: "32",
     registers: [
         {
-            multireg:
-                {
-                    name: "DATA",
-                    desc: "Data register",
-                    count: "2",
-                    cname: "DATA",
-                    swaccess: "rw",
-                    hwaccess: "hrw",
-                    fields: [
-                        { bits: "31:0" }
-                    ]
-                }
+            name: "DIN",
+            desc: "Data to be computed",
+            swaccess: "wo",
+            hwaccess: "hro",
+            fields: [
+                { bits: "31:0" }
+            ]
+        },
+        {
+            name: "DOUT",
+            desc: "Result",
+            swaccess: "ro",
+            hwaccess: "hwo",
+            fields: [
+                { bits: "31:0" }
+            ]
         },
         {
             name: "ENABLE",
             desc: "Enable register",
-            swaccess: "rw",
+            swaccess: "wo",
             hwaccess: "hrw",
             fields: [
                 { bits: "0" }
