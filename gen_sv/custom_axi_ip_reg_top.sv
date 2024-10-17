@@ -68,71 +68,63 @@ module custom_axi_ip_reg_top #(
   // Define SW related signals
   // Format: <reg>_<field>_{wd|we|qs}
   //        or <reg>_{wd|we|qs} if field == 1 or 0
-  logic [31:0] data_0_qs;
-  logic [31:0] data_0_wd;
-  logic data_0_we;
-  logic [31:0] data_1_qs;
-  logic [31:0] data_1_wd;
-  logic data_1_we;
-  logic enable_qs;
+  logic [31:0] din_wd;
+  logic din_we;
+  logic [31:0] dout_qs;
   logic enable_wd;
   logic enable_we;
   logic [1:0] status_qs;
 
   // Register instances
-
-  // Subregister 0 of Multireg data
-  // R[data_0]: V(False)
+  // R[din]: V(False)
 
   prim_subreg #(
     .DW      (32),
-    .SWACCESS("RW"),
+    .SWACCESS("WO"),
     .RESVAL  (32'h0)
-  ) u_data_0 (
+  ) u_din (
     .clk_i   (clk_i    ),
     .rst_ni  (rst_ni  ),
 
     // from register interface
-    .we     (data_0_we),
-    .wd     (data_0_wd),
+    .we     (din_we),
+    .wd     (din_wd),
 
     // from internal hardware
-    .de     (hw2reg.data[0].de),
-    .d      (hw2reg.data[0].d ),
+    .de     (1'b0),
+    .d      ('0  ),
 
     // to internal hardware
     .qe     (),
-    .q      (reg2hw.data[0].q ),
+    .q      (reg2hw.din.q ),
 
-    // to register interface (read)
-    .qs     (data_0_qs)
+    .qs     ()
   );
 
-  // Subregister 1 of Multireg data
-  // R[data_1]: V(False)
+
+  // R[dout]: V(False)
 
   prim_subreg #(
     .DW      (32),
-    .SWACCESS("RW"),
+    .SWACCESS("RO"),
     .RESVAL  (32'h0)
-  ) u_data_1 (
+  ) u_dout (
     .clk_i   (clk_i    ),
     .rst_ni  (rst_ni  ),
 
-    // from register interface
-    .we     (data_1_we),
-    .wd     (data_1_wd),
+    .we     (1'b0),
+    .wd     ('0  ),
 
     // from internal hardware
-    .de     (hw2reg.data[1].de),
-    .d      (hw2reg.data[1].d ),
+    .de     (hw2reg.dout.de),
+    .d      (hw2reg.dout.d ),
 
     // to internal hardware
     .qe     (),
-    .q      (reg2hw.data[1].q ),
+    .q      (),
 
     // to register interface (read)
-    .qs     (data_1_qs)
+    .qs     (dout_qs)
   );
 
 
@@ -140,7 +132,7 @@ module custom_axi_ip_reg_top #(
 
   prim_subreg #(
     .DW      (1),
-    .SWACCESS("RW"),
+    .SWACCESS("WO"),
     .RESVAL  (1'h0)
   ) u_enable (
     .clk_i   (clk_i    ),
@@ -158,8 +150,7 @@ module custom_axi_ip_reg_top #(
     .qe     (),
     .q      (reg2hw.enable.q ),
 
-    // to register interface (read)
-    .qs     (enable_qs)
+    .qs     ()
   );
 
 
@@ -194,8 +185,8 @@ module custom_axi_ip_reg_top #(
   logic [3:0] addr_hit;
   always_comb begin
     addr_hit = '0;
-    addr_hit[0] = (reg_addr == CUSTOM_AXI_IP_DATA_0_OFFSET);
-    addr_hit[1] = (reg_addr == CUSTOM_AXI_IP_DATA_1_OFFSET);
+    addr_hit[0] = (reg_addr == CUSTOM_AXI_IP_DIN_OFFSET);
+    addr_hit[1] = (reg_addr == CUSTOM_AXI_IP_DOUT_OFFSET);
     addr_hit[2] = (reg_addr == CUSTOM_AXI_IP_ENABLE_OFFSET);
     addr_hit[3] = (reg_addr == CUSTOM_AXI_IP_STATUS_OFFSET);
   end
@@ -211,11 +202,8 @@ module custom_axi_ip_reg_top #(
                (addr_hit[3] & (|(CUSTOM_AXI_IP_PERMIT[3] & ~reg_be)))));
   end
 
-  assign data_0_we = addr_hit[0] & reg_we & !reg_error;
-  assign data_0_wd = reg_wdata[31:0];
-
-  assign data_1_we = addr_hit[1] & reg_we & !reg_error;
-  assign data_1_wd = reg_wdata[31:0];
+  assign din_we = addr_hit[0] & reg_we & !reg_error;
+  assign din_wd = reg_wdata[31:0];
 
   assign enable_we = addr_hit[2] & reg_we & !reg_error;
   assign enable_wd = reg_wdata[0];
@@ -225,15 +213,15 @@ module custom_axi_ip_reg_top #(
     reg_rdata_next = '0;
     unique case (1'b1)
       addr_hit[0]: begin
-        reg_rdata_next[31:0] = data_0_qs;
+        reg_rdata_next[31:0] = '0;
       end
 
       addr_hit[1]: begin
-        reg_rdata_next[31:0] = data_1_qs;
+        reg_rdata_next[31:0] = dout_qs;
       end
 
       addr_hit[2]: begin
-        reg_rdata_next[0] = enable_qs;
+        reg_rdata_next[0] = '0;
       end
 
       addr_hit[3]: begin

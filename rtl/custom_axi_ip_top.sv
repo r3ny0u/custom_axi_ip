@@ -77,15 +77,11 @@ module custom_axi_ip_top
     custom_axi_ip i_custom_axi_ip (
         .clk_i(clk_i),
         .rst_ni(rst_ni),
-        .ipreg_data(reg_file_to_ip.data),
+        .ipreg_data(reg_file_to_ip.data.q),
         .enable_in(reg_file_to_ip.enable.q),
-        .ipreg_data_out(result),
-        .enable_out(enable),
-        .status_out(ip_to_reg_file.status.d),
-        .wen_out(wen)
+        .ipreg_data_out(ip_to_reg_file.data),
+        .enable_out(ip_to_reg_file.enable),
+        .status_out(ip_to_reg_file.status)
     );
-
-    assign ip_to_reg_file.data = {result, wen};
-    assign ip_to_reg_file.enable = {enable, wen};
 
 endmodule
