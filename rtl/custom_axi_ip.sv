@@ -41,8 +41,9 @@ module custom_axi_ip
         custom_axi_ip_pkg::BUSY: begin
           // status_out <= custom_axi_ip_pkg::BUSY;
           $display("Busy state");
+          $display("Internal data before: %x", internal_data);
           internal_data <= internal_data + 1;
-          $display("Internal data: %d", internal_data);
+          $display("Internal data after: %x", internal_data);
           state <= custom_axi_ip_pkg::DONE;
           dout <= 33'b0;
           enable_out <= 2'b0;
@@ -52,7 +53,9 @@ module custom_axi_ip
           $display("Done state");
           dout <= {internal_data, 1'b1};
           enable_out <= 2'b01;
-          state <= custom_axi_ip_pkg::IDLE;
+          if (!enable_in) begin
+            state <= custom_axi_ip_pkg::IDLE;
+          end
         end
         custom_axi_ip_pkg::ERROR: begin
           // status_out <= custom_axi_ip_pkg::ERROR;
