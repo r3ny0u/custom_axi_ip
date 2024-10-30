@@ -17,7 +17,7 @@
             swaccess: "wo",
             hwaccess: "hro",
             fields: [
-                { bits: "31:0" }
+                { bits: "15:0" }
             ]
         },
         {
@@ -26,7 +26,7 @@
             swaccess: "ro",
             hwaccess: "hwo",
             fields: [
-                { bits: "31:0" }
+                { bits: "15:0" }
             ]
         },
         {
