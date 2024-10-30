@@ -14,7 +14,7 @@ module custom_axi_ip
     output status_e [2:0] status_out
 );
   // Register to hold input data
-  logic [31:0] internal_data;
+  logic [15:0] internal_data;
   status_e state;
 
   always_ff @(posedge clk_i) begin
@@ -72,7 +72,7 @@ module custom_axi_ip
           enable_out <= 2'b0;
         end
       endcase
-      status_out <= state;
+      status_out <= {state,1'b1};
     end
   end
 
