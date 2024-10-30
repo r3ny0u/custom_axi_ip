@@ -70,18 +70,25 @@ module custom_axi_ip_top
     );
 
     // wiring signals between control unit and custom axi ip
-    logic [63:0] result;
-    logic enable;
-    logic wen;
+    logic [32:0] result;
+    logic [1:0] enable;
+    logic [2:0] status;
 
     custom_axi_ip i_custom_axi_ip (
         .clk_i(clk_i),
         .rst_ni(rst_ni),
         .din(reg_file_to_ip.din.q),
         .enable_in(reg_file_to_ip.enable.q),
-        .dout(ip_to_reg_file.dout),
-        .enable_out(ip_to_reg_file.enable),
-        .status_out(ip_to_reg_file.status)
+        .dout(result),
+        .enable_out(enable),
+        .status_out(status)
     );
+
+    assign ip_to_reg_file.dout.d = result[32:1];
+    assign ip_to_reg_file.dout.de = result[0];
+    assign ip_to_reg_file.enable.d = enable[1];
+    assign ip_to_reg_file.enable.de = enable[0];
+    assign ip_to_reg_file.status.d = status[1:0];
+    assign ip_to_reg_file.status.de = status[0];
 
 endmodule
