@@ -88,7 +88,7 @@ module custom_axi_ip_top
     assign ip_to_reg_file.dout.de = result[0];
     assign ip_to_reg_file.enable.d = enable[1];
     assign ip_to_reg_file.enable.de = enable[0];
-    assign ip_to_reg_file.status.d = status[1:0];
+    assign ip_to_reg_file.status.d = status[2:1];
     assign ip_to_reg_file.status.de = status[0];
 
 endmodule
