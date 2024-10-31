@@ -25,6 +25,7 @@
             desc: "Result",
             swaccess: "ro",
             hwaccess: "hwo",
+            hwext: "true",
             fields: [
                 { bits: "15:0" }
             ]
@@ -43,6 +44,7 @@
             desc: "Status register",
             swaccess: "ro",
             hwaccess: "hwo",
+            hwext: "true",
             fields: [
                 { bits: "1:0",
                   desc: "Current status",
