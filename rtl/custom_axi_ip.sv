@@ -21,9 +21,9 @@ module custom_axi_ip
     if (!rst_ni) begin
       internal_data <= 16'b0;
       state <= custom_axi_ip_pkg::IDLE;
-      dout <= 17'b0;
+      dout <= 16'b0;
       enable_out <= 2'b0;
-      status_out <= 3'b0;
+      status_out <= 2'b0;
     end else begin
       case (state)
         custom_axi_ip_pkg::IDLE: begin
@@ -38,7 +38,7 @@ module custom_axi_ip
             state <= custom_axi_ip_pkg::IDLE;
           end
 
-          dout <= 17'b0;
+          dout <= 16'b0;
           enable_out <= 2'b0;
         end
         custom_axi_ip_pkg::BUSY: begin
@@ -48,7 +48,7 @@ module custom_axi_ip
           internal_data <= internal_data + 1'b1;
           $display("Internal data after: %x", internal_data);
           state <= custom_axi_ip_pkg::DONE;
-          dout <= 17'b0;
+          dout <= 16'b0;
           enable_out <= 2'b0;
         end
         custom_axi_ip_pkg::DONE: begin
@@ -63,16 +63,16 @@ module custom_axi_ip
           // status_out <= custom_axi_ip_pkg::ERROR;
           $display("Error state");
           state <= custom_axi_ip_pkg::IDLE;
-          dout <= 17'b0;
+          dout <= 16'b0;
           enable_out <= 2'b0;
         end
         default: begin
           state <= custom_axi_ip_pkg::ERROR;
-          dout <= 17'b0;
+          dout <= 16'b0;
           enable_out <= 2'b0;
         end
       endcase
-      status_out <= {state,1'b1};
+      status_out <= state;
     end
   end
 
