@@ -9,9 +9,9 @@ module custom_axi_ip
     // Register to Hardware interface
     input logic [15:0] din,
     input logic enable_in,
-    output logic [16:0] dout,
+    output logic [15:0] dout,
     output logic [1:0] enable_out,
-    output logic [2:0] status_out
+    output logic [1:0] status_out
 );
   // Register to hold input data
   logic [15:0] internal_data;
