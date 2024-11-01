@@ -16,6 +16,8 @@ module custom_axi_ip
   // Register to hold input data
   logic [15:0] internal_data;
   status_e state;
+  logic done_add = 0;
+  logic done_read = 0;
 
   always_ff @(posedge clk_i) begin
     if (!rst_ni) begin
@@ -29,49 +31,51 @@ module custom_axi_ip
         custom_axi_ip_pkg::IDLE: begin
           if (enable_in) begin
             $display("Idle state");
-            $display("DIN: %x", din); 
             internal_data <= din;
-            // if (internal_data != 32'h0) begin
-            //   state <= custom_axi_ip_pkg::BUSY;
-            // end
+            done_read <= 1'b1;
           end else begin
             state <= custom_axi_ip_pkg::IDLE;
           end
-
-          dout <= 16'b0;
-          enable_out <= 2'b0;
         end
         custom_axi_ip_pkg::BUSY: begin
           // status_out <= custom_axi_ip_pkg::BUSY;
           $display("Busy state");
-          $display("Internal data before: %x", internal_data);
-          internal_data <= internal_data + 1'b1;
-          $display("Internal data after: %x", internal_data);
           state <= custom_axi_ip_pkg::DONE;
-          dout <= 16'b0;
-          enable_out <= 2'b0;
+          // dout <= 16'b0;
+          // enable_out <= 2'b01;
         end
         custom_axi_ip_pkg::DONE: begin
           // status_out <= custom_axi_ip_pkg::DONE;
           $display("Done state");
-          dout <= {internal_data, 1'b1};
-          $display("DOUT: %x", dout);
-          enable_out <= 2'b01;
+          done_add <= 1'b1;
+          // dout <= internal_data;
+          // $display("DOUT: %x", dout);
+          // enable_out <= 2'b01;
           state <= custom_axi_ip_pkg::IDLE;
         end
         custom_axi_ip_pkg::ERROR: begin
           // status_out <= custom_axi_ip_pkg::ERROR;
           $display("Error state");
           state <= custom_axi_ip_pkg::IDLE;
-          dout <= 16'b0;
-          enable_out <= 2'b0;
+          // dout <= 16'b0;
+          // enable_out <= 2'b00;
         end
         default: begin
           state <= custom_axi_ip_pkg::ERROR;
-          dout <= 16'b0;
-          enable_out <= 2'b0;
+          // dout <= 16'b0;
+          // enable_out <= 2'b00;
         end
       endcase
+      if (done_read) begin
+        done_read <= 1'b0;
+        enable_out <= 2'b01;
+      end
+      
+      if (done_add) begin
+        done_add <= 1'b0;
+        dout <= internal_data;
+      end
+      
       status_out <= state;
     end
   end
