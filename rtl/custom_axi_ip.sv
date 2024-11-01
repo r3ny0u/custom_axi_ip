@@ -7,23 +7,23 @@ module custom_axi_ip
     input logic rst_ni,
 
     // Register to Hardware interface
-    input logic [15:0] din,
+    input logic [31:0] din,
     input logic enable_in,
-    output logic [15:0] dout,
+    output logic [31:0] dout,
     output logic [1:0] enable_out,
     output logic [1:0] status_out
 );
   // Register to hold input data
-  logic [15:0] internal_data;
+  logic [31:0] internal_data;
   status_e state;
   logic done_add = 0;
   logic done_read = 0;
 
   always_ff @(posedge clk_i) begin
     if (!rst_ni) begin
-      internal_data <= 16'b0;
+      internal_data <= 32'b0;
       state <= custom_axi_ip_pkg::IDLE;
-      dout <= 16'b0;
+      dout <= 32'b0;
       enable_out <= 2'b0;
       status_out <= 2'b0;
     end else begin

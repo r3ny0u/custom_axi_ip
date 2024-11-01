@@ -51,7 +51,6 @@ module custom_axi_ip_reg_top #(
   assign reg_intf_req = reg_req_i;
   assign reg_rsp_o = reg_intf_rsp;
 
-
   assign reg_we = reg_intf_req.valid & reg_intf_req.write;
   assign reg_re = reg_intf_req.valid & ~reg_intf_req.write;
   assign reg_addr = reg_intf_req.addr;
@@ -64,13 +63,12 @@ module custom_axi_ip_reg_top #(
   assign reg_rdata = reg_rdata_next;
   assign reg_error = (devmode_i & addrmiss) | wr_err;
 
-
   // Define SW related signals
   // Format: <reg>_<field>_{wd|we|qs}
   //        or <reg>_{wd|we|qs} if field == 1 or 0
-  logic [15:0] din_wd;
+  logic [31:0] din_wd;
   logic din_we;
-  logic [15:0] dout_qs;
+  logic [31:0] dout_qs;
   logic dout_re;
   logic enable_wd;
   logic enable_we;
@@ -81,9 +79,9 @@ module custom_axi_ip_reg_top #(
   // R[din]: V(False)
 
   prim_subreg #(
-      .DW      (16),
+      .DW      (32),
       .SWACCESS("WO"),
-      .RESVAL  (16'h0)
+      .RESVAL  (32'h0)
   ) u_din (
       .clk_i (clk_i),
       .rst_ni(rst_ni),
@@ -107,7 +105,7 @@ module custom_axi_ip_reg_top #(
   // R[dout]: V(True)
 
   prim_subreg_ext #(
-      .DW(16)
+      .DW(32)
   ) u_dout (
       .re (dout_re),
       .we (1'b0),
@@ -162,8 +160,6 @@ module custom_axi_ip_reg_top #(
   );
 
 
-
-
   logic [3:0] addr_hit;
   always_comb begin
     addr_hit = '0;
@@ -185,7 +181,7 @@ module custom_axi_ip_reg_top #(
   end
 
   assign din_we = addr_hit[0] & reg_we & !reg_error;
-  assign din_wd = reg_wdata[15:0];
+  assign din_wd = reg_wdata[31:0];
 
   assign dout_re = addr_hit[1] & reg_re & !reg_error;
 
@@ -199,11 +195,11 @@ module custom_axi_ip_reg_top #(
     reg_rdata_next = '0;
     unique case (1'b1)
       addr_hit[0]: begin
-        reg_rdata_next[15:0] = '0;
+        reg_rdata_next[31:0] = '0;
       end
 
       addr_hit[1]: begin
-        reg_rdata_next[15:0] = dout_qs;
+        reg_rdata_next[31:0] = dout_qs;
       end
 
       addr_hit[2]: begin
