@@ -33,6 +33,7 @@ module custom_axi_ip
             $display("Idle state");
             internal_data <= din;
             done_read <= 1'b1;
+            state <= custom_axi_ip_pkg::BUSY;
           end else begin
             state <= custom_axi_ip_pkg::IDLE;
           end
