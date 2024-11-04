@@ -9,7 +9,6 @@
         }
     ],
 
-    regwidth: "32",
     registers: [
         {
             name: "DIN",
@@ -18,7 +17,7 @@
             hwaccess: "hro",
             fields: [
                 { 
-                    bits: "30:0",
+                    bits: "31:0",
                     name: "datain",
                     desc: "32 bit data"
                 }

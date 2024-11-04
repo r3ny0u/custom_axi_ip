@@ -14,7 +14,7 @@ package custom_axi_ip_reg_pkg;
   ////////////////////////////
 
   typedef struct packed {
-    logic [30:0] q;
+    logic [31:0] q;
   } custom_axi_ip_reg2hw_din_reg_t;
 
   typedef struct packed {
@@ -36,7 +36,7 @@ package custom_axi_ip_reg_pkg;
 
   // Register -> HW type
   typedef struct packed {
-    custom_axi_ip_reg2hw_din_reg_t din; // [31:1]
+    custom_axi_ip_reg2hw_din_reg_t din; // [32:1]
     custom_axi_ip_reg2hw_enable_reg_t enable; // [0:0]
   } custom_axi_ip_reg2hw_t;
 
