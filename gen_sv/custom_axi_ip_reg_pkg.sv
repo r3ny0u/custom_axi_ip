@@ -14,7 +14,7 @@ package custom_axi_ip_reg_pkg;
   ////////////////////////////
 
   typedef struct packed {
-    logic [31:0] q;
+    logic [15:0] q;
   } custom_axi_ip_reg2hw_din_reg_t;
 
   typedef struct packed {
@@ -36,7 +36,7 @@ package custom_axi_ip_reg_pkg;
 
   // Register -> HW type
   typedef struct packed {
-    custom_axi_ip_reg2hw_din_reg_t din; // [32:1]
+    custom_axi_ip_reg2hw_din_reg_t din; // [16:1]
     custom_axi_ip_reg2hw_enable_reg_t enable; // [0:0]
   } custom_axi_ip_reg2hw_t;
 
@@ -67,7 +67,7 @@ package custom_axi_ip_reg_pkg;
 
   // Register width information to check illegal writes
   parameter logic [3:0] CUSTOM_AXI_IP_PERMIT [4] = '{
-    4'b 1111, // index[0] CUSTOM_AXI_IP_DIN
+    4'b 0011, // index[0] CUSTOM_AXI_IP_DIN
     4'b 1111, // index[1] CUSTOM_AXI_IP_DOUT
     4'b 0001, // index[2] CUSTOM_AXI_IP_ENABLE
     4'b 0001  // index[3] CUSTOM_AXI_IP_STATUS

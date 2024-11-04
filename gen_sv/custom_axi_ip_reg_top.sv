@@ -66,7 +66,7 @@ module custom_axi_ip_reg_top #(
   // Define SW related signals
   // Format: <reg>_<field>_{wd|we|qs}
   //        or <reg>_{wd|we|qs} if field == 1 or 0
-  logic [31:0] din_wd;
+  logic [15:0] din_wd;
   logic din_we;
   logic [31:0] dout_qs;
   logic dout_re;
@@ -79,9 +79,9 @@ module custom_axi_ip_reg_top #(
   // R[din]: V(False)
 
   prim_subreg #(
-      .DW      (32),
+      .DW      (16),
       .SWACCESS("WO"),
-      .RESVAL  (32'h0)
+      .RESVAL  (16'h0)
   ) u_din (
       .clk_i (clk_i),
       .rst_ni(rst_ni),
@@ -116,7 +116,6 @@ module custom_axi_ip_reg_top #(
       .q  (),
       .qs (dout_qs)
   );
-
 
   // R[enable]: V(False)
 
@@ -181,7 +180,7 @@ module custom_axi_ip_reg_top #(
   end
 
   assign din_we = addr_hit[0] & reg_we & !reg_error;
-  assign din_wd = reg_wdata[31:0];
+  assign din_wd = reg_wdata[15:0];
 
   assign dout_re = addr_hit[1] & reg_re & !reg_error;
 
@@ -195,7 +194,7 @@ module custom_axi_ip_reg_top #(
     reg_rdata_next = '0;
     unique case (1'b1)
       addr_hit[0]: begin
-        reg_rdata_next[31:0] = '0;
+        reg_rdata_next[15:0] = '0;
       end
 
       addr_hit[1]: begin
