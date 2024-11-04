@@ -17,7 +17,11 @@
             swaccess: "wo",
             hwaccess: "hro",
             fields: [
-                { bits: "31:0" }
+                { 
+                    bits: "30:0",
+                    name: "datain",
+                    desc: "32 bit data"
+                }
             ]
         },
         {
